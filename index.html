@@ -7,105 +7,307 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* 커스텀 스크롤바 (입력란, 터미널용) */
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
+        /* 커스텀 스크롤바 (터미널용) */
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen font-sans text-gray-800">
+<body class="bg-gray-100 min-h-screen font-sans text-gray-800 pb-12">
 
     <div class="max-w-7xl mx-auto px-4 py-8">
-        <!-- 헤더 -->
-        <header class="text-center mb-8">
+        <!-- 헤더 영역 -->
+        <header class="text-center mb-10">
             <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3">🎬 나노바나나프로 x Veo 3.1 롱테이크 생성기</h1>
             <p class="text-gray-600 font-medium">단일 이미지로 다각도 에셋을 생성하고, 완벽한 얼굴 일관성을 유지하는 롱테이크 영상을 만듭니다.</p>
         </header>
 
-        <!-- 메인 레이아웃 -->
-        <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+        <!-- 메인 레이아웃 (좌/우 2단 분리) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
             
             <!-- ========================================== -->
             <!-- 왼쪽: 설정 및 프롬프트 입력 (Input Area) -->
             <!-- ========================================== -->
-            <div class="xl:col-span-6 bg-white p-6 rounded-2xl shadow-md border border-gray-200 flex flex-col h-[850px]">
-                <h2 class="text-xl font-bold mb-4 text-gray-800 flex-shrink-0 border-b pb-2">⚙️ 작업 설정 및 프롬프트</h2>
+            <div class="lg:col-span-7 space-y-6">
                 
-                <!-- 스크롤 가능한 입력 영역 -->
-                <div class="overflow-y-auto custom-scrollbar pr-3 flex-grow space-y-6">
+                <div class="bg-white p-6 md:p-8 rounded-2xl shadow-md border border-gray-200">
+                    <h2 class="text-xl font-bold mb-5 text-gray-800 border-b pb-3">⚙️ 작업 설정 및 프롬프트</h2>
                     
                     <!-- 프로젝트 설명 안내 박스 -->
-                    <div class="p-4 bg-indigo-50 rounded-xl border border-indigo-100">
+                    <div class="p-5 bg-indigo-50 rounded-xl border border-indigo-100 mb-6">
                         <h3 class="text-sm font-bold text-indigo-800 mb-2">💡 파이프라인 동작 원리</h3>
-                        <p class="text-xs text-indigo-700 leading-relaxed">
-                            본 프로젝트는 <strong>나노바나나프로(Nano Banana Pro)</strong>의 기법을 활용해 한 장의 이미지에서 좌/우/뒷모습의 360도 레퍼런스를 동적으로 추출합니다. 
-                            이후 <strong>구글 Veo 3.1</strong>의 강력한 영상 생성 및 <strong>Extend(연장) 기능</strong>에 이 레퍼런스들을 투입하여, 영상이 길어지거나 구도가 바뀌어도 <strong class="text-indigo-900">인물의 얼굴과 정체성(Identity)이 무너지지 않는(Face-Locked) 롱테이크 영상</strong>을 제작합니다.
+                        <p class="text-sm text-indigo-700 leading-relaxed">
+                            <strong>나노바나나프로(Nano Banana Pro)</strong>의 기법을 활용해 한 장의 이미지에서 좌/우/뒷모습의 360도 레퍼런스를 추출합니다. 
+                            이후 <strong>구글 Veo 3.1</strong>에 이 레퍼런스들을 투입하고 Extend(연장) 기능을 반복하여, 영상이 길어지거나 구도가 바뀌어도 <strong class="text-indigo-900 bg-indigo-200 px-1 rounded">인물의 얼굴과 정체성이 완벽히 보존(Face-Locked)</strong>되는 롱테이크 영상을 제작합니다.
                         </p>
                     </div>
 
-                    <!-- 1. API & 이미지 -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- 1. API & 이미지 업로드 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
                         <div class="p-4 bg-gray-50 rounded-xl border border-gray-200">
-                            <label class="block text-sm font-bold text-gray-700 mb-1">🔑 Google GenAI API 키</label>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">🔑 Google GenAI API 키</label>
                             <input type="password" id="apiKey" placeholder="AIzaSy..." 
-                                   class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                            <p class="text-[10px] text-gray-500 mt-1">* 브라우저 로컬에서만 사용됩니다.</p>
+                                   class="w-full px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-white">
+                            <p class="text-xs text-gray-500 mt-2">* 브라우저 로컬에서만 처리되며 서버에 저장되지 않습니다.</p>
                         </div>
                         <div class="p-4 bg-gray-50 rounded-xl border border-gray-200">
-                            <label class="block text-sm font-bold text-gray-700 mb-1">🖼️ 기준 이미지 (Front)</label>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">🖼️ 기준 이미지 (Front)</label>
                             <input type="file" id="imageInput" accept="image/*" 
-                                   class="w-full text-xs text-gray-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:font-semibold file:bg-indigo-100 file:text-indigo-700 hover:file:bg-indigo-200 cursor-pointer">
-                            <div id="imagePreview" class="mt-2 hidden">
-                                <img id="previewImg" class="w-full h-20 object-cover rounded-lg border border-gray-300">
+                                   class="w-full text-sm text-gray-500 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-indigo-100 file:text-indigo-700 hover:file:bg-indigo-200 cursor-pointer bg-white border border-gray-200 rounded-lg">
+                            <div id="imagePreview" class="mt-3 hidden">
+                                <img id="previewImg" class="w-full h-32 object-cover rounded-lg border border-gray-300 shadow-sm">
                             </div>
                         </div>
                     </div>
 
                     <!-- 2. 프롬프트 설정 영역 -->
-                    <div class="space-y-5">
-                        
+                    <div class="space-y-6">
                         <!-- 네거티브 프롬프트 -->
                         <div>
-                            <div class="flex items-baseline justify-between mb-1">
-                                <label class="text-sm font-bold text-red-600">🚫 네거티브 프롬프트 (공통 적용)</label>
-                            </div>
-                            <p class="text-[11px] text-gray-500 mb-2">영상 생성 시 절대 나타나지 말아야 할 요소입니다. 얼굴이 찌그러지거나 변형되는 것을 막는 키워드가 기본 적용되어 있습니다.</p>
-                            <textarea id="negativePrompt" class="w-full px-3 py-2 text-xs border border-red-200 bg-red-50 rounded-lg focus:ring-2 focus:ring-red-400 focus:outline-none custom-scrollbar" rows="3">(distorted face:1.5), changing identity, face morphing, exaggerated expressions, mutated hands, weird eyes, ugly, bad anatomy, deformed head, fast motion, blur</textarea>
+                            <label class="block text-sm font-bold text-red-600 mb-1">🚫 네거티브 프롬프트 (공통 적용)</label>
+                            <p class="text-xs text-gray-500 mb-2">얼굴 변형이나 일관성 붕괴를 막기 위한 필수 제어 키워드입니다.</p>
+                            <textarea id="negativePrompt" class="w-full px-4 py-3 text-sm border border-red-200 bg-red-50 rounded-lg focus:ring-2 focus:ring-red-400 focus:outline-none" rows="2">(distorted face:1.5), changing identity, face morphing, exaggerated expressions, mutated hands, weird eyes, ugly, bad anatomy, deformed head, fast motion, blur</textarea>
                         </div>
 
                         <!-- 최초 프롬프트 (Base) -->
                         <div>
-                            <div class="flex items-baseline justify-between mb-1">
-                                <label class="text-sm font-bold text-blue-700">🎬 최초 생성 프롬프트 (Base 1단계)</label>
-                            </div>
-                            <p class="text-[11px] text-gray-500 mb-2">영상의 첫 5초를 만듭니다. 인물의 외모가 원본과 <strong>정확히 일치(exact same person)</strong>해야 함을 AI에게 강하게 지시합니다.</p>
-                            <textarea id="basePrompt" class="w-full px-3 py-2 text-xs border border-blue-200 bg-blue-50 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none custom-scrollbar" rows="4">Cinematic 4K. The exact same male subject from the reference images. The subject maintains perfectly identical facial features and identity. He is sitting calmly in a hospital room, slowly opening his eyes. Extremely stable and slow push-in camera movement. High fidelity facial identity preservation, photorealistic face, no sudden movements.</textarea>
+                            <label class="block text-sm font-bold text-blue-700 mb-1">🎬 최초 생성 프롬프트 (Base 1단계)</label>
+                            <p class="text-xs text-gray-500 mb-2">영상의 첫 5초. 인물의 외모가 원본과 <strong>정확히 일치(exact same person)</strong>해야 함을 강하게 지시합니다.</p>
+                            <textarea id="basePrompt" class="w-full px-4 py-3 text-sm border border-blue-200 bg-blue-50 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none" rows="3">Cinematic 4K. The exact same male subject from the reference images. The subject maintains perfectly identical facial features and identity. He is sitting calmly in a hospital room, slowly opening his eyes. Extremely stable and slow push-in camera movement. High fidelity facial identity preservation, photorealistic face.</textarea>
                         </div>
 
                         <!-- 1차 연장 프롬프트 -->
                         <div>
-                            <div class="flex items-baseline justify-between mb-1">
-                                <label class="text-sm font-bold text-purple-700">📽️ 1차 연장 프롬프트 (Extend 2단계)</label>
-                            </div>
-                            <p class="text-[11px] text-gray-500 mb-2">Base 영상에서 이어지는 5초입니다. 행동이 추가되어도 <strong>얼굴과 이목구비가 완벽히 보존(Perfect facial consistency)</strong>되도록 강조합니다.</p>
-                            <textarea id="extendPrompt1" class="w-full px-3 py-2 text-xs border border-purple-200 bg-purple-50 rounded-lg focus:ring-2 focus:ring-purple-400 focus:outline-none custom-scrollbar" rows="4">Cinematic 4K. The exact same male subject continues his action from the previous scene. With smooth and controlled movements, he gently takes off his arm sling. Perfect facial consistency maintained without any face morphing. The medical staff watches quietly. Slow-motion, exact facial structure preserved. Soft hospital lighting.</textarea>
+                            <label class="block text-sm font-bold text-purple-700 mb-1">📽️ 1차 연장 프롬프트 (Extend 2단계)</label>
+                            <p class="text-xs text-gray-500 mb-2">이어지는 5초. 행동이 추가되어도 <strong>얼굴과 이목구비가 완벽히 보존(Perfect facial consistency)</strong>되도록 강조합니다.</p>
+                            <textarea id="extendPrompt1" class="w-full px-4 py-3 text-sm border border-purple-200 bg-purple-50 rounded-lg focus:ring-2 focus:ring-purple-400 focus:outline-none" rows="3">Cinematic 4K. The exact same male subject continues his action. With smooth and controlled movements, he gently takes off his arm sling. Perfect facial consistency maintained without any face morphing. The medical staff watches quietly. Exact facial structure preserved.</textarea>
                         </div>
 
                         <!-- 2차 연장 프롬프트 -->
                         <div>
-                            <div class="flex items-baseline justify-between mb-1">
-                                <label class="text-sm font-bold text-emerald-700">🎞️ 2차 연장 프롬프트 (Extend 3단계)</label>
-                            </div>
-                            <p class="text-[11px] text-gray-500 mb-2">마지막 5초를 연장하여 총 15초의 롱테이크를 완성합니다. 동선이 커져도 <strong>정체성(Identity) 유지</strong>에 집중합니다.</p>
-                            <textarea id="extendPrompt2" class="w-full px-3 py-2 text-xs border border-emerald-200 bg-emerald-50 rounded-lg focus:ring-2 focus:ring-emerald-400 focus:outline-none custom-scrollbar" rows="4">Cinematic 4K. The exact same male subject calmly and smoothly stands up from the bed. His face remains perfectly preserved without any distortion. Looking completely healthy, he begins to walk slowly forward. Smooth camera tracking his movement. High-end cinematic documentary style. Perfect facial structure preservation throughout the movement.</textarea>
+                            <label class="block text-sm font-bold text-emerald-700 mb-1">🎞️ 2차 연장 프롬프트 (Extend 3단계)</label>
+                            <p class="text-xs text-gray-500 mb-2">마지막 5초 연장. 동선이 커지거나 시점이 바뀌어도 <strong>정체성 유지</strong>에 집중합니다.</p>
+                            <textarea id="extendPrompt2" class="w-full px-4 py-3 text-sm border border-emerald-200 bg-emerald-50 rounded-lg focus:ring-2 focus:ring-emerald-400 focus:outline-none" rows="3">Cinematic 4K. The exact same male subject calmly stands up from the bed. His face remains perfectly preserved without distortion. Looking healthy, he begins to walk slowly forward. Smooth camera tracking his movement. Perfect facial structure preservation throughout the movement.</textarea>
                         </div>
                     </div>
-                </div>
 
-                <!-- 실행 버튼 (고정) -->
-                <div class="pt-4 mt-2 border-t border-gray-200 flex-shrink-0">
+                    <!-- 실행 버튼 -->
                     <button id="startBtn" onclick="startPipeline()" 
-                            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-xl transition duration-200 shadow-md flex justify-center items-center">
-                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round
+                            class="mt-8 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-4 rounded-xl transition duration-300 shadow-lg flex justify-center items-center text-lg">
+                        🚀 비디오 롱테이크 생성 시작
+                    </button>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- 오른쪽: 진행 상태 및 결과 (Progress & Result) -->
+            <!-- ========================================== -->
+            <div class="lg:col-span-5">
+                <!-- sticky 옵션: 스크롤을 내려도 오른쪽 영역은 화면 상단에 고정됨 -->
+                <div class="bg-white p-6 md:p-8 rounded-2xl shadow-md border border-gray-200 sticky top-8">
+                    <h2 class="text-xl font-bold mb-5 text-gray-800 border-b pb-3">📊 작업 진행 상황</h2>
+
+                    <!-- 진행률 바 -->
+                    <div class="mb-6 bg-gray-50 p-4 rounded-xl border border-gray-100">
+                        <div class="flex justify-between text-sm font-bold text-gray-700 mb-2">
+                            <span id="progressText">대기 중...</span>
+                            <span id="progressPercent" class="text-indigo-600">0%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                            <div id="progressBar" class="bg-indigo-600 h-3 rounded-full transition-all duration-500 relative" style="width: 0%">
+                                <!-- 반짝이는 애니메이션 효과 -->
+                                <div class="absolute top-0 left-0 bottom-0 right-0 bg-white opacity-20" style="animation: pulse 2s infinite;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 스텝 인디케이터 -->
+                    <ul class="space-y-4 mb-6 text-sm font-medium" id="stepList">
+                        <li id="step0" class="flex items-center text-gray-400"><span class="w-7 h-7 border-2 border-gray-300 rounded-full flex items-center justify-center mr-3 text-xs bg-white">1</span> 이미지 다각도 레퍼런스 생성</li>
+                        <li id="step1" class="flex items-center text-gray-400"><span class="w-7 h-7 border-2 border-gray-300 rounded-full flex items-center justify-center mr-3 text-xs bg-white">2</span> Base 1단계 영상 생성</li>
+                        <li id="step2" class="flex items-center text-gray-400"><span class="w-7 h-7 border-2 border-gray-300 rounded-full flex items-center justify-center mr-3 text-xs bg-white">3</span> Extend 2단계 영상 연장</li>
+                        <li id="step3" class="flex items-center text-gray-400"><span class="w-7 h-7 border-2 border-gray-300 rounded-full flex items-center justify-center mr-3 text-xs bg-white">4</span> Extend 3단계 영상 연장</li>
+                        <li id="step4" class="flex items-center text-gray-400"><span class="w-7 h-7 border-2 border-gray-300 rounded-full flex items-center justify-center mr-3 text-xs bg-white">5</span> 다운로드 준비 및 완료</li>
+                    </ul>
+
+                    <!-- 로그 터미널 -->
+                    <div class="bg-gray-900 text-green-400 font-mono text-xs p-4 rounded-xl overflow-y-auto h-40 scrollbar-hide shadow-inner mb-6" id="logTerminal">
+                        > 시스템 준비 완료. 프롬프트와 이미지를 확인하세요.
+                    </div>
+
+                    <!-- 결과 비디오 영역 (완료 후 표시) -->
+                    <div id="resultArea" class="hidden flex flex-col items-center justify-center bg-indigo-50 rounded-xl p-5 border-2 border-dashed border-indigo-300 transition-all">
+                        <p class="text-indigo-800 font-extrabold mb-3 text-lg">🎉 비디오 생성 완료!</p>
+                        <!-- 샘플 비디오 소스 삽입 -->
+                        <video id="finalVideo" controls class="w-full rounded-lg shadow-md mb-4 border border-indigo-100"></video>
+                        <a id="downloadBtn" href="#" download="scene1_longtake_FaceLocked.mp4" 
+                           class="w-full text-center bg-emerald-500 hover:bg-emerald-600 text-white py-3 px-6 rounded-xl font-bold transition duration-200 shadow-sm flex justify-center items-center">
+                           <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                           📥 완성된 영상 다운로드
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript 로직 -->
+    <script>
+        // DOM 요소 가져오기
+        const imageInput = document.getElementById('imageInput');
+        const previewImg = document.getElementById('previewImg');
+        const imagePreview = document.getElementById('imagePreview');
+        const logTerminal = document.getElementById('logTerminal');
+        const progressBar = document.getElementById('progressBar');
+        const progressPercent = document.getElementById('progressPercent');
+        const progressText = document.getElementById('progressText');
+        const startBtn = document.getElementById('startBtn');
+        const resultArea = document.getElementById('resultArea');
+
+        // 이미지 미리보기 처리
+        imageInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImg.src = e.target.result;
+                    imagePreview.classList.remove('hidden');
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // 터미널 로그 출력 함수
+        function log(message, type = "info") {
+            const time = new Date().toLocaleTimeString();
+            let color = "text-green-400";
+            if (type === "error") color = "text-red-400";
+            if (type === "warn") color = "text-yellow-400";
+            if (type === "highlight") color = "text-cyan-300 font-bold";
+            
+            logTerminal.innerHTML += `<div class="${color} mb-1">[${time}] ${message}</div>`;
+            logTerminal.scrollTop = logTerminal.scrollHeight; // 스크롤 맨 아래로 유지
+        }
+
+        // 스텝(단계) UI 업데이트
+        function updateStep(stepIndex, isComplete = false) {
+            const stepEl = document.getElementById(`step${stepIndex}`);
+            if(!stepEl) return;
+            
+            if (isComplete) {
+                stepEl.className = "flex items-center text-gray-800 font-bold transition-colors";
+                stepEl.innerHTML = `<span class="w-7 h-7 bg-emerald-500 text-white rounded-full flex items-center justify-center mr-3 text-sm shadow-sm">✓</span> ` + stepEl.innerText.substring(2);
+            } else {
+                stepEl.className = "flex items-center text-indigo-600 font-bold animate-pulse transition-colors";
+                stepEl.innerHTML = `<span class="w-7 h-7 border-2 border-indigo-600 rounded-full flex items-center justify-center mr-3 text-xs bg-indigo-50">⏳</span> ` + stepEl.innerText.substring(2);
+            }
+        }
+
+        // 진행률 바 업데이트
+        function updateProgress(percent, text) {
+            progressBar.style.width = `${percent}%`;
+            progressPercent.innerText = `${percent}%`;
+            progressText.innerText = text;
+        }
+
+        // 비동기 대기 함수 (시간 지연 시뮬레이션용)
+        const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+        // 메인 실행 파이프라인
+        async function startPipeline() {
+            const apiKey = document.getElementById('apiKey').value;
+            const file = imageInput.files[0];
+
+            if (!apiKey) {
+                alert("API 키를 입력해주세요!");
+                document.getElementById('apiKey').focus();
+                return;
+            }
+            if (!file) {
+                alert("기준 이미지(Front)를 업로드해주세요!");
+                return;
+            }
+
+            // UI 초기화 및 버튼 비활성화
+            startBtn.disabled = true;
+            startBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            logTerminal.innerHTML = "";
+            resultArea.classList.add('hidden');
+            
+            // 모든 스텝 초기화
+            for(let i=0; i<=4; i++) {
+                const el = document.getElementById(`step${i}`);
+                el.className = "flex items-center text-gray-400 font-medium transition-colors";
+                el.innerHTML = `<span class="w-7 h-7 border-2 border-gray-300 rounded-full flex items-center justify-center mr-3 text-xs bg-white">${i+1}</span> ` + el.innerText.substring(2);
+            }
+
+            try {
+                log("==================================================", "highlight");
+                log("🎬 Nano Banana Pro x Veo 3.1 파이프라인 가동", "highlight");
+                log("==================================================", "highlight");
+
+                /* [STEP 0] 다각도 레퍼런스 생성 */
+                updateProgress(10, "[STEP 0] 레퍼런스 에셋 생성 중...");
+                updateStep(0, false);
+                log("Gemini-3-pro-image를 통한 360도 레퍼런스 뷰(좌/우/뒤) 추출 요청...");
+                await delay(2500); // API 대기 시뮬레이션
+                log("-> LEFT 뷰 렌더링 완료");
+                log("-> BACK 뷰 렌더링 완료");
+                log("🖼️ 3장 에셋 조합 완료 (Front, Left, Back)");
+                updateStep(0, true);
+
+                /* [STEP 1] Base 영상 생성 */
+                updateProgress(35, "[STEP 1] Base 영상 렌더링 중...");
+                updateStep(1, false);
+                log("\n🎥 [Base] Veo 3.1 모델로 첫 번째 영상 렌더링 시작...");
+                for(let i=1; i<=3; i++) {
+                    await delay(1500);
+                    log(`... 구글 서버 렌더링 진행 중 (${i}/3)`);
+                }
+                log("✅ [Base] 1단계 영상 렌더링 완료!");
+                updateStep(1, true);
+
+                /* [STEP 2] 1차 연장 */
+                updateProgress(65, "[STEP 2] 1차 영상 연장 중...");
+                updateStep(2, false);
+                log("\n⏳ [Extend 1] 동기화 후 1차 연장 프롬프트 적용...");
+                for(let i=1; i<=2; i++) {
+                    await delay(1500);
+                    log(`... 1차 연장 렌더링 진행 중 (${i}/2)`);
+                }
+                log("✅ [Extend 1] 1차 연장 영상 생성 완료!");
+                updateStep(2, true);
+
+                /* [STEP 3] 2차 연장 */
+                updateProgress(90, "[STEP 3] 2차 영상 연장 중...");
+                updateStep(3, false);
+                log("\n⏳ [Extend 2] 2차 연장 프롬프트 적용 (Face-Locked 유지)...");
+                await delay(2500);
+                log("✅ [Extend 2] 2차 연장 영상 생성 완료!");
+                updateStep(3, true);
+
+                /* [STEP 4] 완료 처리 및 다운로드 제공 */
+                updateProgress(100, "작업 성공적 완료!");
+                updateStep(4, false);
+                log("\n📥 최종 롱테이크 영상 병합 및 URI 수신 중...");
+                await delay(1500); 
+                log("🎉 완벽한 얼굴 일관성이 유지된 롱테이크가 완성되었습니다.", "highlight");
+                updateStep(4, true);
+
+                // 결과 영역 표시 (샘플 비디오 출력)
+                // 실제 서비스 시 API가 반환한 비디오 URL을 .src와 .href에 바인딩합니다.
+                const sampleVideoUrl = "https://www.w3schools.com/html/mov_bbb.mp4";
+                document.getElementById('finalVideo').src = sampleVideoUrl; 
+                document.getElementById('downloadBtn').href = sampleVideoUrl;
+                resultArea.classList.remove('hidden');
+
+            } catch (error) {
+                log(`❌ 오류 발생: ${error.message}`, "error");
+            } finally {
+                startBtn.disabled = false;
+                startBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                startBtn.innerHTML = "🔄 파이프라인 다시 실행하기";
+            }
+        }
+    </script>
+</body>
+</html>
